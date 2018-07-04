@@ -157,3 +157,4 @@ tags
 # End of https://www.gitignore.io/api/java,python,vim
 
 *.pem
+.vagrant
