@@ -2,7 +2,7 @@
 
 ## Mission 1 - Begin at July 4th
 
-- [ ] Start a vagrant virtual machine
+- [x] Start a vagrant virtual machine
 - [ ] Using Ansible Ad-Hoc Command to Install nginx & Docker on a VM
 - [ ] Using Ansible Playbook to Install nginx & Docker on a host
 - [ ] Create a docker image with ansible installed
