@@ -1,12 +1,22 @@
 ---
 - hosts: default
-  vars:
-    install_items:
-      - nginx
-      - docker
   tasks:
-  - name: Install Nginx and Docker
+  - name: Install Nginx
     become: yes
     package: 
-      name: "{{ install_items }}"
+      name: nginx
       state: present
+  - name: Update Index of the package
+    become: yes
+    command: apt update
+  - name: Install Docker -- install base-packages
+    become: yes
+    when: ansible_distribution == "Ubuntu"
+    shell: apt install -y --no-cached "{{ item }}"
+    loop:
+      - linux-image-extra-$(uname -r)
+      - linux-image-extra-virtual 
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - software-properties-common 
