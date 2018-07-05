@@ -6,17 +6,16 @@
     package: 
       name: nginx
       state: present
-  - name: Update Index of the package
+  - name: Install Docker
     become: yes
-    command: apt update
-  - name: Install Docker -- install base-packages
+    shell: curl -fsSL get.docker.com -o get-docker.sh && bash get-docker.sh
+  - name: Install docker-compose
     become: yes
-    when: ansible_distribution == "Ubuntu"
-    shell: apt install -y --no-cached "{{ item }}"
-    loop:
-      - linux-image-extra-$(uname -r)
-      - linux-image-extra-virtual 
-      - apt-transport-https
-      - ca-certificates
-      - curl
-      - software-properties-common 
+    shell: curl -L https://github.com/docker/compose/releases/download/1.21.2/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose && chmod +x /usr/local/bin/docker-compose
+  - name: Grant permission for vagrant to run docker command
+    become: yes
+    user:
+      name=vagrant
+      state=present
+      append=yes
+      groups=docker
