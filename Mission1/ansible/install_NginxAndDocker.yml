@@ -1,0 +1,12 @@
+---
+- hosts: default
+  vars:
+    install_items:
+      - nginx
+      - docker
+  tasks:
+  - name: Install Nginx and Docker
+    become: yes
+    package: 
+      name: "{{ install_items }}"
+      state: present
