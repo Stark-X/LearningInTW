@@ -1,0 +1,34 @@
+---
+- hosts: default
+  tasks:
+    - name: Install pip on the remote
+      become: true
+      apt:
+        name: python-pip
+        state: latest
+    - name: Uninstall os maintained urllib3, chardet for the next step exception
+      become: true
+      apt:
+        name: "{{ packages }}"
+        state: absent
+      vars:
+        packages:
+          - python-urllib3
+          - python-chardet
+    - name: Install docker module dependencies 
+      become: true
+      ignore_errors: true
+      pip:
+        name: docker-py
+        state: latest
+    - name: Copy Dockerfile to the nodes
+      copy:
+        src: Dockerfile-base-ansible
+        dest: ~/workspace/
+    - name: Build image
+      docker_image:
+        name: base_ansible
+        tag: latest
+        path: ~/workspace/
+        dockerfile: Dockerfile-base-ansible
+      

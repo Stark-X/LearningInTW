@@ -10,7 +10,8 @@
 - [x] Using Ansible Playbook to Install nginx & Docker on a host
     - `cd Mission1/ansible/`
     - `ansible-playbook -i hosts install_NginxAndDocker.yml -v`
-- [ ] Create a docker image with ansible installed
+- [x] Create a docker image with ansible installed
+    - `ansible-playbook -i hosts create_DockerImageWithAnsibleInside.yml -v`
 - [ ] Start Jenkins, Gogs in docker by ansible
 - [ ] Using ansible to create a image as deploy server ( JAVA, MYSQL )
 - [ ] Create a pipeline to build image ( Build latest Jenkins , JAVA, GOGS )
