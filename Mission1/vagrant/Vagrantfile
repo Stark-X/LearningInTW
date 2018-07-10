@@ -14,6 +14,8 @@ Vagrant.configure("2") do |config|
     config.vm.network "forwarded_port", guest: 80, host: 80
     config.ssh.keep_alive = true
     config.vm.provision "shell",
-        inline: "sudo apt-get install -y linux-headers-$(uname -r) build-essential dkms"
-    config.vm.synced_folder "data/", "/home/vagrant/workspace"
+        inline: "mkdir ~/workspace && sudo apt-get install -y linux-headers-$(uname -r) build-essential dkms"
+    # The below mount point will caused the containers in the VM could not change the permission for files/folders,
+    # because the permission controlled by the VM-host
+    config.vm.synced_folder "data/", "/home/vagrant/workspace", disabled: true
 end
