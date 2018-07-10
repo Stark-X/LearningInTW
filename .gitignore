@@ -158,3 +158,5 @@ tags
 
 *.pem
 .vagrant
+*.retry
+vagrant/data/
