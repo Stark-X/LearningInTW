@@ -60,6 +60,18 @@ services:
       - "10080:3000/tcp"
     volumes:
       - "${PWD}/data/:/data/"
+    depends_on: 
+      - mysql
+  mysql:
+    from: "mysql:5.7"
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: gogs
+      MYSQL_USER: gogs
+      MYSQL_PASSWORD: gogs
+    volumes:
+      - "${PWD}/mysql_data:/var/lib/mysql"
 registries: {}
   # Add optional registries used for deployment. For example:
   #  google:

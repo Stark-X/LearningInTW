@@ -22,18 +22,21 @@
         version: 2.7.0
     - name: Copy the ansible-container related files to the remote machine
       copy:
-        src: Jenkins/
-        dest: ~/workspace/Jenkins/
-    - name: Build the docker container contains the Jenkins
+        src: Gogs/
+        dest: ~/workspace/Gogs/
+    - name: Build the docker container contains the Gogs
       shell: ansible-container build
       args:
-        chdir: ~/workspace/Jenkins
+        chdir: ~/workspace/Gogs
     - name: Post-action for the mount folders
       file:
-        path: ~/workspace/Jenkins/data 
+        path: "~/workspace/Gogs/{{ item }}" 
         state: directory
         mode: 0777
-    - name: Start the docker container contains the Jenkins
+      loop:
+        - data
+        - mysql_data
+    - name: Start the docker container contains the Gogs
       shell: ansible-container run
       args:
-        chdir: ~/workspace/Jenkins
+        chdir: ~/workspace/Gogs
