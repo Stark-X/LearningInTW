@@ -5,14 +5,14 @@ settings:
     # The Conductor container does the heavy lifting, and provides a portable
     # Python runtime for building your target containers. It should be derived
     # from the same distribution as you're building your target containers with.
-    base: alpine:latest
+    base: centos:7
     # roles_path:   # Specify a local path containing Ansible roles
     # volumes:      # Provide a list of volumes to mount
     # environment:  # List or mapping of environment variables
 
   # Set the name of the project. Defaults to basename of the project directory.
   # For built services, concatenated with service name to form the built image name.
-  project_name: Jenkins
+  project_name: Gogs
 
   # The deployment_output_path is mounted to the Conductor container, and the 
   # `run` and `deployment` commands then write generated Ansible playbooks to it.
@@ -47,18 +47,19 @@ settings:
   #  description:
   #  display_name:
 
-services: 
-  jenkins:
-    from: "jenkins:latest"
+services:
+  # Add your containers here, specifying the base image you want to build from.
+  # To use this example, uncomment it and delete the curly braces after services key.
+  # You may need to run `docker pull ubuntu:trusty` for this to work.
+
+  gogs:
+    from: "gogs/gogs:latest"
     restart: always
     ports:
-      - "8080:8080/tcp"
-      - "50000:50000/tcp"
+      - "10022:22/tcp"
+      - "10080:3000/tcp"
     volumes:
-      - ${PWD}/data:/var/jenkins_home/
-    dev_overrides:
-      environment:
-        - "DEBUG=1"
+      - "${PWD}/data/:/data/"
 registries: {}
   # Add optional registries used for deployment. For example:
   #  google:
