@@ -14,6 +14,9 @@
 - [x] Create a docker image with ansible installed
     - `ansible-playbook -i hosts create_DockerImageWithAnsibleInside.yml -v`
 - [x] Use ansible to create and start Jenkins, Gogs
+    - `cd Mission1/ansible/`
+    - `ansible-playbook -i hosts start_Jenkins-host.yml`
+    - `ansible-playbook -i hosts start_Gogs-host.yml`
 - [ ] Create a pipeline in Jenkins to upgrade the Jenkins itself and the Gogs
 - [ ] Deploy a "Hello world" spring boot application with commits
 

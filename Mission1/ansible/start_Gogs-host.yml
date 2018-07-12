@@ -24,8 +24,16 @@
       copy:
         src: Gogs/
         dest: ~/workspace/Gogs/
+    - name: Enusre the docker image is the latest - gogs
+      docker_image:
+        name: gogs/gogs:latest
+        force: yes
+    - name: Enusre the docker image is the latest - mysql
+      docker_image:
+        name: mysql:5.7
+        force: yes
     - name: Build the docker container contains the Gogs
-      shell: ansible-container build
+      shell: ansible-container build --no-container-cache
       args:
         chdir: ~/workspace/Gogs
     - name: Post-action for the mount folders
@@ -36,6 +44,10 @@
       loop:
         - data
         - mysql_data
+    - name: Stop the running containers
+      shell: ansible-container stop
+      args:
+        chdir: ~/workspace/Gogs
     - name: Start the docker container contains the Gogs
       shell: ansible-container run
       args:

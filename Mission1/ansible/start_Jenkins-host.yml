@@ -24,8 +24,12 @@
       copy:
         src: Jenkins/
         dest: ~/workspace/Jenkins/
+    - name: Enusre the docker image is the latest - jenkins
+      docker_image:
+        name: jenkins/jenkins:lts
+        force: yes
     - name: Build the docker container contains the Jenkins
-      shell: ansible-container build
+      shell: ansible-container build --no-container-cache
       args:
         chdir: ~/workspace/Jenkins
     - name: Post-action for the mount folders
@@ -33,6 +37,10 @@
         path: ~/workspace/Jenkins/data 
         state: directory
         mode: 0777
+    - name: Stop the running containers
+      shell: ansible-container stop
+      args:
+        chdir: ~/workspace/Jenkins
     - name: Start the docker container contains the Jenkins
       shell: ansible-container run
       args:
