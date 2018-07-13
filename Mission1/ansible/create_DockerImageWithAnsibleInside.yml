@@ -4,7 +4,7 @@
     - name: Install pip on the remote
       become: true
       apt:
-        name: python-pip
+        name: python3-pip
         state: latest
     - name: Uninstall os maintained urllib3, chardet for the next step exception
       become: true
