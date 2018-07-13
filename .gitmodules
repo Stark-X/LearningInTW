@@ -1,0 +1,3 @@
+[submodule "Mission1/HelloSpringBoot"]
+	path = Mission1/HelloSpringBoot
+	url = http://localhost:10080/gogs/HelloSpringBoot.git
