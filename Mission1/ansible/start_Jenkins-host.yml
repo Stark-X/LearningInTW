@@ -2,12 +2,12 @@
 - hosts: default
   tasks:
     - include: common/prepare_ansible-container.yml
-    - include: common/start_app_with_docker.yml app=Jenkins image=jenkins/jenkins:lts items=["data"]
+    - include: common/start_app_with_docker.yml app=Jenkins images=["jenkins/jenkins:lts"] subfolders=["data"]
     - name: Wait 120 sec for the Jenkins Master start
       wait_for:
         port: 8080
-        delay: 10
-        timeout: 120
+        delay: 30
+        timeout: 300
     - name: Download the slave.jar
       get_url:
         url: http://localhost:8080/jnlpJars/slave.jar
@@ -18,4 +18,4 @@
         name: default-jre
         state: present
     - name: Laungh the Jenkins slave
-      shell: java -jar slave.jar -jnlpUrl http://localhost:8080/computer/Host/slave-agent.jnlp -secret 2e503e69d8c9ddde7ffef8fbdaad115ecfb0fec8a5f5b5f5bb784e7ae29936f2
+      shell: java -jar slave.jar -jnlpUrl http://localhost:8080/computer/Host/slave-agent.jnlp -secret e0103d112c3a50519e553a523a39ec67a2ea79bd904c400472c6118520086747

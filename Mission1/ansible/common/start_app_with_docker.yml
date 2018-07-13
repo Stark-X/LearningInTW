@@ -4,8 +4,9 @@
     dest: "~/workspace/{{ app }}/"
 - name: Enusre the docker image is the latest - {{ app }}
   docker_image:
-    name: "{{ image }}"
+    name: "{{ item }}"
     force: yes
+  loop: "{{ images }}"
 - name: Build the docker container contains the {{ app }}
   shell: ansible-container build --no-container-cache
   args:
@@ -15,9 +16,7 @@
     path: "~/workspace/{{ app }}/{{ item }}" 
     state: directory
     mode: 0777
-    owner: vagrant
-    group: vagrant
-  loop: "{{ items }}"
+  loop: "{{ subfolders }}"
 - name: Stop the running containers
   shell: ansible-container stop
   args:
