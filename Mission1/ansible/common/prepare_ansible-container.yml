@@ -1,0 +1,20 @@
+- name: Check and Install the ansible on the remote machine
+  become: true
+  pip:
+    name: ansible
+- name: Downgrade the pip to 9.0.3 for solving set of pip 10.x issues
+  become: true
+  pip:
+    name: pip
+    state: forcereinstall
+    version: 9.0.3
+- name: Install ansible-container
+  become: true
+  pip:
+    name: ansible-container[docker]
+- name: Install dependency "docker" package
+  become: true
+  pip:
+    name: docker
+    version: 2.7.0
+    state: present

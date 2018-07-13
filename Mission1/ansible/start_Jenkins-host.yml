@@ -1,47 +1,21 @@
 ---
 - hosts: default
   tasks:
-    - name: Check and Install the ansible on the remote machine
+    - include: common/prepare_ansible-container.yml
+    - include: common/start_app_with_docker.yml app=Jenkins image=jenkins/jenkins:lts items=["data"]
+    - name: Wait 120 sec for the Jenkins Master start
+      wait_for:
+        port: 8080
+        delay: 10
+        timeout: 120
+    - name: Download the slave.jar
+      get_url:
+        url: http://localhost:8080/jnlpJars/slave.jar
+        dest: ~/workspace/Jenkins
+    - name: Install java runtime
       become: true
-      pip:
-        name: ansible
-    - name: Downgrade the pip to 9.0.3 for solving set of pip 10.x issues
-      become: true
-      pip:
-        name: pip
-        state: forcereinstall
-        version: 9.0.3
-    - name: Install ansible-container
-      become: true
-      pip:
-        name: ansible-container[docker]
-    - name: Downgrade the pip package 'docker' to 2.7.0 for solving ansible-container dependencies issue
-      become: true
-      pip:
-        name: docker
-        version: 2.7.0
-    - name: Copy the ansible-container related files to the remote machine
-      copy:
-        src: Jenkins/
-        dest: ~/workspace/Jenkins/
-    - name: Enusre the docker image is the latest - jenkins
-      docker_image:
-        name: jenkins/jenkins:lts
-        force: yes
-    - name: Build the docker container contains the Jenkins
-      shell: ansible-container build --no-container-cache
-      args:
-        chdir: ~/workspace/Jenkins
-    - name: Post-action for the mount folders
-      file:
-        path: ~/workspace/Jenkins/data 
-        state: directory
-        mode: 0777
-    - name: Stop the running containers
-      shell: ansible-container stop
-      args:
-        chdir: ~/workspace/Jenkins
-    - name: Start the docker container contains the Jenkins
-      shell: ansible-container run
-      args:
-        chdir: ~/workspace/Jenkins
+      apt:
+        name: default-jre
+        state: present
+    - name: Laungh the Jenkins slave
+      shell: java -jar slave.jar -jnlpUrl http://localhost:8080/computer/Host/slave-agent.jnlp -secret 2e503e69d8c9ddde7ffef8fbdaad115ecfb0fec8a5f5b5f5bb784e7ae29936f2
