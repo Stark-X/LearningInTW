@@ -19,8 +19,9 @@
       become: true
       ignore_errors: true
       pip:
-        name: docker-py
-        state: latest
+        name: docker
+        state: present
+        version: 2.7
     - name: Copy Dockerfile to the nodes
       copy:
         src: Dockerfile-base-ansible

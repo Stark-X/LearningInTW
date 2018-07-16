@@ -12,6 +12,11 @@
   become: true
   pip:
     name: ansible-container[docker]
+- name: Uninstall conflict "docker" packages
+  become: true
+  pip:
+    name: docker,docker-py
+    state: absent
 - name: Install dependency "docker" package
   become: true
   pip:
