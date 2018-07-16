@@ -10,7 +10,7 @@
         timeout: 300
     - name: Download the slave.jar
       get_url:
-        url: http://localhost:8080/jnlpJars/slave.jar
+        url: http://localhost:8080/jnlpJars/agent.jar
         dest: ~/workspace/Jenkins
     - name: Install java runtime
       become: true
@@ -18,4 +18,4 @@
         name: default-jre
         state: present
     - name: Laungh the Jenkins slave
-      shell: java -jar slave.jar -jnlpUrl http://localhost:8080/computer/Host/slave-agent.jnlp -secret e0103d112c3a50519e553a523a39ec67a2ea79bd904c400472c6118520086747
+      shell: nohup java -jar agent.jar -jnlpUrl http://localhost:8080/computer/Host/slave-agent.jnlp -secret e0103d112c3a50519e553a523a39ec67a2ea79bd904c400472c6118520086747 > /dev/null 2>&1 &
